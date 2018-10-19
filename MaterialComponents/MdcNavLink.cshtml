@@ -1,0 +1,13 @@
+﻿@using Microsoft.AspNetCore.Blazor.Routing
+
+<NavLink href=@Href class="mdc-list-item" Match=@Match ActiveClass="mdc-list-item--activated">
+    <i class="material-icons mdc-list-item__graphic" aria-hidden="true">@Icon</i>
+    <span class="mdc-list-item__text">@Text</span>
+</NavLink>
+
+@functions {
+    [Parameter] NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+    [Parameter] string Icon { get; set; }
+    [Parameter] string Text { get; set; }
+    [Parameter] string Href { get; set; }
+}

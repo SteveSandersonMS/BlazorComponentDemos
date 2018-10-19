@@ -1,0 +1,29 @@
+﻿@inherits BlazorLayoutComponent
+
+<MdcDrawer IsOpen=sidebarIsOpen>
+    <NavMenu OnItemClicked=@ToggleSidebar />
+</MdcDrawer>
+
+<div class="mdc-drawer-app-content">
+    <MdcTopAppBar Title="Razor Component demos" OnNavClicked=@ToggleSidebar ScrollTarget="#main-content">
+
+        <!-- TODO: Add account info and log in/out button -->
+
+    </MdcTopAppBar>
+
+    <main class="main-content" id="main-content">
+        <div class="mdc-top-app-bar--fixed-adjust">
+            @Body
+        </div>
+    </main>
+</div>
+
+@functions {
+    bool sidebarIsOpen;
+
+    void ToggleSidebar()
+    {
+        sidebarIsOpen = !sidebarIsOpen;
+        StateHasChanged();
+    }
+}

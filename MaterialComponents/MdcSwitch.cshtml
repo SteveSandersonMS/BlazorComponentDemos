@@ -1,0 +1,36 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
+<div class="mdc-switch" ref=switchElem>
+    <div class="mdc-switch__track"></div>
+    <div class="mdc-switch__thumb-underlay">
+        <div class="mdc-switch__thumb">
+            <input type="checkbox" id="@id" checked=@Checked onchange=@HandleChange class="mdc-switch__native-control" role="switch" />
+        </div>
+    </div>
+</div>
+&nbsp;&nbsp;&nbsp;
+<label for="@id">@Label</label>
+
+@functions {
+    ElementRef switchElem;
+    string id = Guid.NewGuid().ToString();
+
+    [Parameter] string Label { get; set; } = "On/off";
+    [Parameter] bool Checked { get; set; }
+    [Parameter] Action<bool> CheckedChanged { get; set; }
+    [Parameter] Action OnChange { get; set; }
+
+    void HandleChange()
+    {
+        Checked = !Checked;
+        CheckedChanged?.Invoke(Checked);
+        OnChange?.Invoke();
+    }
+
+    protected override async Task OnAfterRenderAsync()
+    {
+        await jsRuntime.InvokeAsync<object>(
+                "BlazorMaterial.switch.setChecked", switchElem, Checked);
+    }
+}

@@ -1,0 +1,62 @@
+﻿@page "/cascading-validation"
+
+<h1 class="mdc-typography--headline3">Validating form</h1>
+
+<ValidatingForm OnValidSubmit=@Submit OnInvalidSubmit=@InvalidSubmit>
+    <p>
+        <div class="mdc-form-field">
+            <MdcTextField Label="Kitten name" bind-Text=@kittenName />
+            <RequiredValidator
+                Value=@(() => kittenName)
+                Message="What is the kitten called?" />
+        </div>
+    </p>
+
+    <p>
+        <div class="mdc-form-field">
+            <MdcSelect Label="Kitten breed" bind-Value=@kittenBreed>
+                <option value="" disabled selected></option>
+                <option value="brit-short">British Shorthair</option>
+                <option value="russ-blue">Russian Blue</option>
+                <option value="ice-invis">Icelandic Invisible</option>
+            </MdcSelect>
+            <RequiredValidator
+                Value=@(() => kittenBreed)
+                Message="Look, we're asking you a question here, buddy." />
+        </div>
+    </p>
+
+
+    <p>
+        <div class="mdc-form-field">
+            <MdcCheckbox Id="accept-terms" bind-Checked=kittenAcceptsTerms />
+            <label for="accept-terms">Kitten accepts terms</label>
+            <RequiredValidator
+                Value=@(() => kittenAcceptsTerms)
+                Message="All kittens must accept terms. No exceptions." />
+        </div>
+    </p>
+
+    <MdcButton>Submit</MdcButton>
+</ValidatingForm>
+
+<p>@message</p>
+
+@functions {
+    string kittenName;
+    string kittenBreed;
+    bool kittenAcceptsTerms;
+    string message;
+
+    void Submit()
+    {
+        message = $"Would submit name: {kittenName}; breed: {kittenBreed}; accepts terms: {kittenAcceptsTerms}";
+        StateHasChanged();
+    }
+
+    void InvalidSubmit()
+    {
+        message = null;
+        StateHasChanged();
+    }
+}

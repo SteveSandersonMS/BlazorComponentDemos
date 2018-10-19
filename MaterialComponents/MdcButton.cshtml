@@ -1,0 +1,80 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
+<button ref="buttonElem" disabled=@(!Enabled) class="mdc-button @(Class ?? defaultClass)" onclick=@HandleClick>
+    @ChildContent
+</button>
+
+@functions {
+    const string defaultClass = "mdc-button--raised";
+
+    [Parameter] bool Enabled { get; set; }
+
+    RenderFragment ChildContent { get; set; }
+    string @Class { get; set; }
+    Func<Task> OnClick { get; set; }
+    object OnClickTarget { get; set; }
+
+    ElementRef buttonElem;
+    bool isFirstRender = true;
+
+    public override void SetParameters(ParameterCollection parameters)
+    {
+        ChildContent = parameters.GetValueOrDefault<RenderFragment>(nameof(ChildContent));
+        Class = parameters.GetValueOrDefault<string>("class");
+        Enabled = parameters.GetValueOrDefault<bool>(nameof(Enabled), true);
+
+        var onclick = parameters.GetValueOrDefault<object>("onclick");
+        if (onclick is Func<Task> onclickAsync)
+        {
+            OnClick = onclickAsync;
+            OnClickTarget = onclickAsync.Target;
+        }
+        else if (onclick is Action onclickSync)
+        {
+            OnClick = () =>
+            {
+                onclickSync();
+                return Task.CompletedTask;
+            };
+            OnClickTarget = onclickSync.Target;
+        }
+
+        StateHasChanged();
+    }
+
+    async Task HandleClick()
+    {
+        if (OnClick != null)
+        {
+            var task = OnClick();
+            OnClickTargetStateHasChanged();
+
+            if (!task.IsCompleted)
+            {
+                await task;
+                OnClickTargetStateHasChanged();
+            }
+        }
+    }
+
+    void OnClickTargetStateHasChanged()
+    {
+        // Workaround for event routing bug
+        if (OnClickTarget is BlazorComponent targetComponent)
+        {
+            targetComponent.GetType().GetMethod(nameof(StateHasChanged), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .Invoke(targetComponent, null);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync()
+    {
+        if (isFirstRender)
+        {
+            isFirstRender = false;
+            await jsRuntime.InvokeAsync<object>(
+                "BlazorMaterial.button.init", buttonElem);
+        }
+    }
+}

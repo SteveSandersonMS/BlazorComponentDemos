@@ -1,0 +1,32 @@
+﻿@inherits ValidatorBase
+@functions {
+    [Parameter] Func<object> Value { get; set; }
+    [Parameter] string Message { get; set; }
+
+    protected override bool IsValid(out string message)
+    {
+        if (HasValue())
+        {
+            message = null;
+            return true;
+        }
+        else
+        {
+            message = Message ?? "A value is required.";
+            return false;
+        }
+    }
+
+    bool HasValue()
+    {
+        switch (Value?.Invoke())
+        {
+            case string stringValue:
+                return !string.IsNullOrWhiteSpace(stringValue);
+            case bool boolValue:
+                return boolValue;
+            default:
+                return false;
+        }
+    }
+}

@@ -1,0 +1,15 @@
+﻿@page "/templated-components"
+
+<h1 class="mdc-typography--headline3">Templated components</h1>
+
+<SuperDialog Title="Important info" BodyContent="You look nice today" />
+
+<MdcButton onclick=@ShowDialog>Show dialog</MdcButton>
+
+@functions {
+    void ShowDialog()
+    {
+        // TODO:
+        // myDialog.Show();
+    }
+}

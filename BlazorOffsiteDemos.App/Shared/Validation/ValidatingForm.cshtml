@@ -1,0 +1,33 @@
+﻿<form onsubmit=@AttemptSubmit>
+    <CascadingValue Value=this>
+        @ChildContent
+    </CascadingValue>
+</form>
+
+@functions {
+    [Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] Action OnValidSubmit { get; set; }
+    [Parameter] Action OnInvalidSubmit { get; set; }
+
+    HashSet<IValidator> validators = new HashSet<IValidator>();
+    internal void AddValidator(IValidator validator) => validators.Add(validator);
+    internal void RemoveValidator(IValidator validator) => validators.Remove(validator);
+
+    void AttemptSubmit()
+    {
+        var allValid = true;
+        foreach (var validator in validators)
+        {
+            allValid &= validator.Validate();
+        }
+
+        if (allValid)
+        {
+            OnValidSubmit?.Invoke();
+        }
+        else
+        {
+            OnInvalidSubmit?.Invoke();
+        }
+    }
+}

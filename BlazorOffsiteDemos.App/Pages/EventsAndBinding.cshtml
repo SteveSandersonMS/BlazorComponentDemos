@@ -1,0 +1,22 @@
+﻿@page "/events-and-binding"
+
+<h1 class="mdc-typography--headline3">Events and binding</h1>
+
+<p>
+    <div class="mdc-button mdc-button--raised">Hover over me</div>
+    &nbsp;&nbsp; @string.Join(", ", log)
+</p>
+
+@functions {
+    List<string> log = new List<string>();
+
+    void MouseOver()
+    {
+        log.Add("In");
+    }
+
+    void MouseOut()
+    {
+        log.Add("Out");
+    }
+}

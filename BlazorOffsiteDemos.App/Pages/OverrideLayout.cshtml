@@ -1,0 +1,77 @@
+﻿@page "/override-layout"
+@layout MainLayout
+
+<div class="demo-cards-grid">
+    @foreach (var card in cards)
+    {
+        <div class="mdc-card demo-card demo-card--hero">
+            <div class="mdc-card__primary-action" tabindex="0">
+                <div class="mdc-card__media mdc-card__media--16-9 demo-card__media" style="background-image: url('@card.ImageUrl');"></div>
+                <div class="demo-card__primary">
+                    <h2 class="demo-card__title mdc-typography--headline6">@card.Title</h2>
+                </div>
+                <div class="demo-card__secondary mdc-typography--body2">@card.Subtitle</div>
+                </div>
+                <div class="mdc-card__actions">
+                    <div class="mdc-card__action-buttons">
+                        <button class="mdc-button mdc-card__action mdc-card__action--button">Read</button>
+                        <button class="mdc-button mdc-card__action mdc-card__action--button">Bookmark</button>
+                    </div>
+                <div class="mdc-card__action-icons">
+                    <button class="mdc-icon-button mdc-card__action mdc-card__action--icon">
+                        <i class="material-icons mdc-icon-button__icon mdc-icon-button__icon--on">favorite</i>
+                        <i class="material-icons mdc-icon-button__icon">favorite_border</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@functions {
+    CardContents[] cards = new CardContents[]
+    {
+        new CardContents
+        {
+            Title = "Hairy MacLary",
+            Subtitle = "... from Donaldson's Dairy",
+            ImageUrl = "card-images/hairy_maclary.jpg"
+        },
+        
+        new CardContents
+        {
+            Title = "Scarface Claw",
+            Subtitle = "The toughest tom in town",
+            ImageUrl = "card-images/scarface_claw.jpg"
+        },
+        
+        new CardContents
+        {
+            Title = "Bitzer Maloney",
+            Subtitle = "... all skinny and bony",
+            ImageUrl = "card-images/bitzer_maloney.jpg"
+        },
+        
+        new CardContents
+        {
+            Title = "Schnitzel Von Krumm",
+            Subtitle = "... with a very low tum",
+            ImageUrl = "card-images/schnitzel_von_krumm.jpg"
+        },
+        
+        new CardContents
+        {
+            Title = "Slinky Malinki",
+            Subtitle = "Rapscallion cat",
+            ImageUrl = "card-images/slinky_malinki.jpg"
+        }
+    };
+
+    class CardContents
+    {
+        public string Title { get; set; }
+        public string Subtitle { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}

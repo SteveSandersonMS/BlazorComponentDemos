@@ -1,0 +1,21 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
+<aside ref="drawerElem" class="mdc-drawer mdc-drawer--dismissible" id="app-drawer">
+    <div class="mdc-drawer__content">
+        @ChildContent
+    </div>
+</aside>
+
+@functions {
+    [Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] bool IsOpen { get; set; }
+
+    ElementRef drawerElem;
+
+    protected override Task OnAfterRenderAsync()
+        => jsRuntime.InvokeAsync<object>(
+            "BlazorMaterial.drawer.toggle",
+            drawerElem,
+            IsOpen);
+}

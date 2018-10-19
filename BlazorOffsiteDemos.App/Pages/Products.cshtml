@@ -1,0 +1,62 @@
+﻿@page "/products"
+@implements IDisposable
+@layout MainLayout
+@inject IProductsRepository ProductsRepository
+
+<p class="page-header">
+    <h1 class="mdc-typography--headline5">Products</h1>
+    <div class="page-header-right">
+        <MdcButton onclick=@SaveChanges Enabled=enableSave>
+            <i class="material-icons mdc-button__icon">save</i>
+            Save
+        </MdcButton>
+    </div>
+</p>
+
+@if (displayedProducts == null)
+{
+    <MdcLinearProgress />
+    <p>Loading...</p>
+}
+else
+{
+    <MdcList Items=displayedProducts Context=product>
+        <Icon>shop</Icon>
+        <Title>@product.DisplayName</Title>
+        <Subtitle>@product.Description</Subtitle>
+        <Actions>
+            <MdcSwitch
+                Label="available"
+                bind-Checked=product.IsInStock
+                onchange=@(() => { enableSave = true; StateHasChanged(); }) />
+        </Actions>
+    </MdcList>
+}
+
+@functions {
+    IEnumerable<Product> displayedProducts;
+    bool enableSave;
+
+    protected override async Task OnInitAsync()
+    {
+        displayedProducts = await ProductsRepository.GetProductsAsync();
+        ProductsRepository.StateChanged += OnRepositoryStateChanged;
+    }
+
+    async Task SaveChanges()
+    {
+        enableSave = false;
+        await ProductsRepository.SaveChangesAsync();
+    }
+
+    void OnRepositoryStateChanged(object sender, EventArgs args)
+    {
+        enableSave = false;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        ProductsRepository.StateChanged -= OnRepositoryStateChanged;
+    }
+}

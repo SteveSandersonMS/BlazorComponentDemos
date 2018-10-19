@@ -1,0 +1,19 @@
+﻿@page "/js-interop"
+@inject IJSRuntime jsRuntime
+<h1 class="mdc-typography--headline3">JS interop</h1>
+
+<p>
+    <MdcButton onclick=@DoPrompt>Call prompt</MdcButton>
+    &nbsp; Result: <strong>@promptResult</strong>
+</p>
+
+@functions {
+    string promptResult;
+
+    async Task DoPrompt()
+    {
+        promptResult = await jsRuntime.InvokeAsync<string>(
+            "demoJsFuncs.showPrompt",
+            "Tell us about your childhood");
+    }
+}

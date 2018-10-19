@@ -1,0 +1,29 @@
+﻿@implements IValidator
+@implements IDisposable
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <span class="invalid-message">@errorMessage</span>
+}
+
+@functions {
+    string errorMessage;
+
+    [CascadingParameter] ValidatingForm OwnerForm { get; set; }
+
+    protected override void OnInit() => OwnerForm.AddValidator(this);
+    public void Dispose() => OwnerForm.RemoveValidator(this);
+
+    public bool Validate()
+    {
+        var result = IsValid(out errorMessage);
+        StateHasChanged(); // Show or hide the error message
+        return result;
+    }
+
+    protected virtual bool IsValid(out string message)
+    {
+        message = "No validation logic is defined";
+        return false;
+    }
+}

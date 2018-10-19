@@ -1,0 +1,30 @@
+﻿@page "/routing"
+@page "/routing/{id:int}"
+@page "/routing/{id:int}/{title}"
+@inject IUriHelper uriHelper
+
+<h1 class="mdc-typography--headline3">Routing</h1>
+
+<p>ID: <strong>@Id</strong></p>
+<p>Title: <strong>@Title</strong></p>
+<p>Absolute URL: <strong>@uriHelper.GetAbsoluteUri()</strong></p>
+
+<ul class="my-links">
+    <li><a href="routing">No params</a></li>
+    <li><a href="routing/123">With ID</a></li>
+    <li><a href="routing/123/blah">With ID and Title</a></li>
+    <li><a href="routing/123/blah?a=1&b=2">With ID and Title and query</a></li>
+</ul>
+
+@functions {
+    [Parameter] int Id { get; set; }
+    [Parameter] string Title { get; set; }
+
+    // Workaround known issue (PR pending merge)
+    public override void SetParameters(ParameterCollection parameters)
+    {
+        Id = default;
+        Title = default;
+        base.SetParameters(parameters);
+    }
+}
