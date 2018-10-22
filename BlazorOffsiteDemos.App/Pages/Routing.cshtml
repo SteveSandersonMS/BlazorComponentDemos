@@ -10,11 +10,19 @@
 <p>Absolute URL: <strong>@uriHelper.GetAbsoluteUri()</strong></p>
 
 <ul class="my-links">
-    <li><a href="routing">No params</a></li>
-    <li><a href="routing/123">With ID</a></li>
-    <li><a href="routing/123/blah">With ID and Title</a></li>
-    <li><a href="routing/123/blah?a=1&b=2">With ID and Title and query</a></li>
+    <li><NavLink Match=NavLinkMatch.All href="routing">No params</NavLink></li>
+    <li><NavLink Match=NavLinkMatch.All href="routing/123">With ID</NavLink></li>
+    <li><NavLink Match=NavLinkMatch.All href="routing/123/blah">With ID and Title</NavLink></li>
+    <li><NavLink Match=NavLinkMatch.All href="routing/123/blah?a=1&b=2">With ID and Title and query</NavLink></li>
 </ul>
+
+<style>
+    .my-links a.active { background-color: yellow; }
+</style>
+
+<MdcButton onclick=@(async () => { await Task.Delay(1000); uriHelper.NavigateTo("counter"); })>
+    Programmatic navigation
+</MdcButton>
 
 @functions {
     [Parameter] int Id { get; set; }

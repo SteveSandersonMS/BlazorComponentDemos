@@ -1,29 +1,51 @@
 ﻿@inherits BlazorLayoutComponent
 
-<MdcDrawer IsOpen=sidebarIsOpen>
-    <NavMenu OnItemClicked=@ToggleSidebar />
-</MdcDrawer>
+<CascadingValue Value=authState>
+    <MdcDrawer IsOpen=sidebarIsOpen>
+        <NavMenu OnItemClicked=@ToggleSidebar />
+    </MdcDrawer>
 
-<div class="mdc-drawer-app-content">
-    <MdcTopAppBar Title="Razor Component demos" OnNavClicked=@ToggleSidebar ScrollTarget="#main-content">
+    <div class="mdc-drawer-app-content">
+        <MdcTopAppBar Title="Component demos" OnNavClicked=@ToggleSidebar ScrollTarget="#main-content">
 
-        <!-- TODO: Add account info and log in/out button -->
+            @if (authState == null)
+            {
+                <MdcButton onclick="@LogIn">Log in</MdcButton>
+            }
+            else
+            {
+                <UserDisplay UserName=@authState.UserName />
+                <MdcButton onclick="@LogOut">Log out</MdcButton>
+            }
 
-    </MdcTopAppBar>
+        </MdcTopAppBar>
 
-    <main class="main-content" id="main-content">
-        <div class="mdc-top-app-bar--fixed-adjust">
-            @Body
-        </div>
-    </main>
-</div>
+        <main class="main-content" id="main-content">
+            <div class="mdc-top-app-bar--fixed-adjust">
+                @Body
+            </div>
+        </main>
+    </div>
+</CascadingValue>
 
 @functions {
     bool sidebarIsOpen;
+
+    AuthState authState = new AuthState { UserName = "steve" };
 
     void ToggleSidebar()
     {
         sidebarIsOpen = !sidebarIsOpen;
         StateHasChanged();
+    }
+
+    void LogIn()
+    {
+        authState = new AuthState { UserName = "Someone else" };
+    }
+
+    void LogOut()
+    {
+        authState = null;
     }
 }

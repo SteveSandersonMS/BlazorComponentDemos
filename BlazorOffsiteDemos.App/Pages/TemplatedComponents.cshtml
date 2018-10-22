@@ -2,14 +2,31 @@
 
 <h1 class="mdc-typography--headline3">Templated components</h1>
 
-<SuperDialog Title="Important info" BodyContent="You look nice today" />
+<SuperDialog ref=myDialog Title="Directory info" Context="prod" Thing=fakeProduct>
+    <BodyContent>
+        Item @prod.DisplayName is in stock: @prod.IsInStock
+    </BodyContent>
+    <ButtonsContent>
+        <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
+        <button class="mdc-button mdc-dialog__button mdc-button--raised" data-mdc-dialog-action="ok">Aww gee, thanks!</button>
+    </ButtonsContent>
+</SuperDialog>
 
 <MdcButton onclick=@ShowDialog>Show dialog</MdcButton>
 
 @functions {
+    SuperDialog<Product> myDialog;
+
+    static Product fakeProduct = new Product
+    {
+        ProductId = 1,
+        DisplayName = "Cheesy Peas",
+        Description = "If you like cheese, and you like peas, then you'll love cheesy peas.",
+        IsInStock = true
+    };
+
     void ShowDialog()
     {
-        // TODO:
-        // myDialog.Show();
+        myDialog.Show();
     }
 }

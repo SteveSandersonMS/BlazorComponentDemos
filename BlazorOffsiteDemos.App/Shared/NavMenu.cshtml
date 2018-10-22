@@ -2,7 +2,10 @@
     <MdcNavLink Href="" Icon="home" Text="Home" Match=NavLinkMatch.All />
     <MdcNavLink Href="events-and-binding" Icon="refresh" Text="Events and Binding" />
     <MdcNavLink Href="counter" Icon="control_point" Text="Counter" />
-    <MdcNavLink Href="products" Icon="shop" Text="Products" />
+    @if (CurrentAuthState != null)
+    {
+        <MdcNavLink Href="products" Icon="shop" Text="Products" />
+    }
     <MdcNavLink Href="override-layout" Icon="view_comfy" Text="Layout" />
     <MdcNavLink Href="routing" Icon="directions" Text="Routing" />
     <MdcNavLink Href="templated-components" Icon="extension" Text="Templated components" />
@@ -12,4 +15,5 @@
 
 @functions {
     [Parameter] Action OnItemClicked { get; set; }
+    [CascadingParameter] AuthState CurrentAuthState { get; set; }
 }

@@ -8,7 +8,7 @@ namespace BlazorOffsiteDemos.App
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IProductsRepository, DefaultProductsRepository>();
+            services.AddSingleton<IProductsRepository, DefaultProductsRepository>();
         }
 
         public void Configure(IBlazorApplicationBuilder app)

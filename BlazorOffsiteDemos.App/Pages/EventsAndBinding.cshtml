@@ -3,16 +3,57 @@
 <h1 class="mdc-typography--headline3">Events and binding</h1>
 
 <p>
-    <div class="mdc-button mdc-button--raised">Hover over me</div>
+    <div class="mdc-button mdc-button--raised"
+         onmouseover=@MouseOver onmouseout=@MouseOut>
+        Hover over me
+    </div>
     &nbsp;&nbsp; @string.Join(", ", log)
 </p>
 
+<p>
+    <div class="mdc-select">
+        <label class="mdc-floating-label mdc-floating-label--float-above">
+            Kitten breed
+        </label>
+        <select class="mdc-select__native-control" bind=@kittenBreed>
+            <option value="">Unknown</option>
+            <option value="brit-short">British Shorthair</option>
+            <option value="russ-blue">Russian Blue</option>
+            <option value="ice-invis">Icelandic Invisible</option>
+        </select>
+    </div>
+    &nbsp;&nbsp;
+    You chose: <strong>@kittenBreed</strong>
+</p>
+
+<p>
+    <MdcTextField Label="Name of kitten" bind-Text=@kittenName />
+</p>
+
+<p>
+    <MdcButton onclick=@UpdateMessage>Submit</MdcButton>
+</p>
+
+@message
+
+
 @functions {
     List<string> log = new List<string>();
+    string kittenBreed;
+    string kittenName;
+    string message;
 
-    void MouseOver()
+    void UpdateMessage()
+    {
+        message = $"Breed: {kittenBreed ?? "None"}; Name: {kittenName ?? "None"}";
+    }
+
+    async Task MouseOver()
     {
         log.Add("In");
+
+        await Task.Delay(1000);
+        log.Add("Delayed");
     }
 
     void MouseOut()

@@ -14,6 +14,14 @@
     {
         promptResult = await jsRuntime.InvokeAsync<string>(
             "demoJsFuncs.showPrompt",
-            "Tell us about your childhood");
+            "Tell us about your childhood",
+            new DotNetObjectRef(this));
+    }
+
+    [JSInvokable(nameof(GetCurrentTime))]
+    public async Task<string> GetCurrentTime()
+    {
+        await Task.Delay(100); // Async is optional
+        return DateTime.Now.ToLongTimeString();
     }
 }

@@ -1,8 +1,11 @@
 ﻿@page "/counter"
+@implements IDisposable
+@using System.Threading
     
 <h1 class="mdc-typography--headline3">Counter</h1>
 
 <CounterDisplay Label="Count" Value=currentCount />
+<CounterDisplay Label="Static" Value=123 />
 
 <MdcButton onclick="@IncrementCount">Click me</MdcButton>
 
@@ -15,5 +18,19 @@
     void IncrementCount()
     {
         currentCount++;
+    }
+    
+    /*
+    IDisposable timer;
+
+    protected override void OnInit()
+    {
+        timer = new Timer(_ => StateHasChanged(), null, 0, 1000);
+    }
+    */
+
+    public void Dispose()
+    {
+        //timer.Dispose();
     }
 }

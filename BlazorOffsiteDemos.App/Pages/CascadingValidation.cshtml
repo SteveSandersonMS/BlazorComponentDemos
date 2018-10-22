@@ -5,10 +5,12 @@
 <ValidatingForm OnValidSubmit=@Submit OnInvalidSubmit=@InvalidSubmit>
     <p>
         <div class="mdc-form-field">
-            <MdcTextField Label="Kitten name" bind-Text=@kittenName />
-            <RequiredValidator
-                Value=@(() => kittenName)
-                Message="What is the kitten called?" />
+            <ValidationGroup>
+                <MdcTextField Label="Kitten name" bind-Text=@kittenName />
+                <RequiredValidator
+                    Value=@(() => kittenName)
+                    Message="What is the kitten called?" />
+            </ValidationGroup>
         </div>
     </p>
 
