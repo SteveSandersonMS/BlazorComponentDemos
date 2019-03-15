@@ -1,5 +1,5 @@
 using BlazorOffsiteDemos.App.Services;
-using Microsoft.AspNetCore.Blazor.Builder;
+using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorOffsiteDemos.App
@@ -11,7 +11,7 @@ namespace BlazorOffsiteDemos.App
             services.AddSingleton<IProductsRepository, DefaultProductsRepository>();
         }
 
-        public void Configure(IBlazorApplicationBuilder app)
+        public void Configure(IComponentsApplicationBuilder app)
         {
             app.AddComponent<App>("app");
         }

@@ -29,10 +29,10 @@
     [Parameter] string Title { get; set; }
 
     // Workaround known issue (PR pending merge)
-    public override void SetParameters(ParameterCollection parameters)
+    public override Task SetParametersAsync(ParameterCollection parameters)
     {
         Id = default;
         Title = default;
-        base.SetParameters(parameters);
+        return base.SetParametersAsync(parameters);
     }
 }

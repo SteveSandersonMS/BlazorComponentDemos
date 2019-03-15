@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@page "{*clientPath}"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Component Demos</title>
-    <base href="/" />
+    <base href="~/" />
     <link rel="stylesheet" href="css/site.css" />
     <link href="material-components/lib/icon.css" rel="stylesheet" />
     <link href="material-components/lib/material-components-web.min.css" rel="stylesheet" />
@@ -14,7 +16,7 @@
 <body class="mdc-typography">
     <app>Loading...</app>
 
-    <script src="_framework/components.webassembly.js"></script>
+    <script src="_framework/components.server.js"></script>
     <script src="js/demos.js"></script>
 </body>
 </html>
