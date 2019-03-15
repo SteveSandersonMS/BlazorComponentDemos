@@ -1,3 +1,4 @@
+using BlazorOffsiteDemos.App.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,8 @@ namespace BlazorOffsiteDemos.Server
                 .AddNewtonsoftJson()
                 .AddRazorPagesOptions(options => { options.RootDirectory = "/"; });
             services.AddRazorComponents();
+
+            services.AddSingleton<IProductsRepository, DefaultProductsRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
