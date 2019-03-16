@@ -4,10 +4,10 @@
 @inject IProductsRepository ProductsRepository
 
 <p class="page-header">
-    <h1 class="mdc-typography--headline5">Products</h1>
+    <h1 class="@Mdc.Typography.H5">Products</h1>
     <div class="page-header-right">
         <MdcButton onclick=@SaveChanges Enabled=enableSave>
-            <i class="material-icons mdc-button__icon">save</i>
+            @MdcButton.Icon("save")
             Save
         </MdcButton>
     </div>
@@ -28,7 +28,7 @@ else
             <MdcSwitch
                 Label="available"
                 bind-Checked=product.IsInStock
-                onchange=@(() => { enableSave = true; StateHasChanged(); }) />
+                onchange=@(() => { enableSave = true; }) />
         </Actions>
     </MdcList>
 }
@@ -51,8 +51,11 @@ else
 
     void OnRepositoryStateChanged(object sender, EventArgs args)
     {
-        enableSave = false;
-        StateHasChanged();
+        Invoke(() =>
+        {
+            enableSave = false;
+            StateHasChanged();
+        });
     }
 
     public void Dispose()

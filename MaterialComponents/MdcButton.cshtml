@@ -1,81 +1,24 @@
-﻿@using Microsoft.JSInterop
+﻿@inherits MdcComponentBase
 @inject IJSRuntime jsRuntime
-
-<button ref="buttonElem" disabled=@(!Enabled) class="mdc-button @(Class ?? defaultClass)" onclick=@HandleClick>
+<button ref="buttonElem" disabled="@(!Enabled)" class="mdc-button @ButtonStyle @Class" temp-data-mdc-dialog-action="@DialogAction" onclick="@OnClick">
     @ChildContent
 </button>
-
 @functions {
-    const string defaultClass = "mdc-button--raised";
-
-    [Parameter] bool Enabled { get; set; }
-
-    RenderFragment ChildContent { get; set; }
-    string @Class { get; set; }
-    Func<Task> OnClick { get; set; }
-    object OnClickTarget { get; set; }
+    public const string None = "";
+    public const string Raised = "mdc-button--raised";
 
     ElementRef buttonElem;
-    bool isFirstRender = true;
 
-    public override Task SetParametersAsync(ParameterCollection parameters)
-    {
-        ChildContent = parameters.GetValueOrDefault<RenderFragment>(nameof(ChildContent));
-        Class = parameters.GetValueOrDefault<string>("class");
-        Enabled = parameters.GetValueOrDefault<bool>(nameof(Enabled), true);
+    [Parameter] bool Enabled { get; set; } = true;
+    [Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] EventCallback OnClick { get; set; }
+    [Parameter] string ButtonStyle { get; set; } = Raised;
+    [Parameter] string Class { get; set; }
+    [Parameter] string DialogAction { get; set; }
 
-        var onclick = parameters.GetValueOrDefault<object>("onclick");
-        if (onclick is Func<Task> onclickAsync)
-        {
-            OnClick = onclickAsync;
-            OnClickTarget = onclickAsync.Target;
-        }
-        else if (onclick is Action onclickSync)
-        {
-            OnClick = () =>
-            {
-                onclickSync();
-                return Task.CompletedTask;
-            };
-            OnClickTarget = onclickSync.Target;
-        }
+    protected override Task OnAfterFirstRenderAsync()
+        => jsRuntime.InvokeAsync<object>("BlazorMaterial.button.init", buttonElem);
 
-        StateHasChanged();
-        return Task.CompletedTask;
-    }
-
-    async Task HandleClick()
-    {
-        if (OnClick != null)
-        {
-            var task = OnClick();
-            OnClickTargetStateHasChanged();
-
-            if (!task.IsCompleted)
-            {
-                await task;
-                OnClickTargetStateHasChanged();
-            }
-        }
-    }
-
-    void OnClickTargetStateHasChanged()
-    {
-        // Workaround for event routing bug
-        if (OnClickTarget is ComponentBase targetComponent)
-        {
-            targetComponent.GetType().GetMethod(nameof(StateHasChanged), System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
-                .Invoke(targetComponent, null);
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync()
-    {
-        if (isFirstRender)
-        {
-            isFirstRender = false;
-            await jsRuntime.InvokeAsync<object>(
-                "BlazorMaterial.button.init", buttonElem);
-        }
-    }
+    public static MarkupString Icon(string name)
+        => (MarkupString)$"<i class=\"material-icons mdc-button__icon\">{name}</i>";
 }

@@ -5,10 +5,9 @@
   <div class="mdc-dialog__container">
     <div class="mdc-dialog__surface">
       <h2 class="mdc-dialog__title">@Title</h2>
-      <div class="mdc-dialog__content">@ChildContent</div>
+      <div class="mdc-dialog__content">@Body</div>
       <footer class="mdc-dialog__actions">
-        <button onclick="alert('no')" type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="no">No</button>
-        <button onclick="alert('yes')" type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">Yes</button>
+          @Buttons
       </footer>
     </div>
   </div>
@@ -17,10 +16,11 @@
 
 @functions {
     [Parameter] string Title { get; set; }
-    [Parameter] RenderFragment ChildContent { get; set; }
+    [Parameter] RenderFragment Body { get; set; }
+    [Parameter] RenderFragment Buttons { get; set; }
 
     ElementRef dialogElem;
 
-    public Task Show() => jsRuntime.InvokeAsync<object>(
-        "BlazorMaterial.dialog.show", dialogElem);
+    public Task<string> ShowAsync()
+        => jsRuntime.InvokeAsync<string>("BlazorMaterial.dialog.show", dialogElem);
 }

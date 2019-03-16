@@ -1,13 +1,12 @@
 ﻿@page "/events-and-binding"
 
-<h1 class="mdc-typography--headline3">Events and binding</h1>
+<h1 class="@Mdc.Typography.H3">Events and binding</h1>
 
 <p>
-    <div class="mdc-button mdc-button--raised"
-         onmouseover=@MouseOver onmouseout=@MouseOut>
-        Hover over me
+    <div class="mdc-button @MdcButton.Raised" onmouseover=@MouseOver onmouseout=@MouseOut>
+        Hover here
     </div>
-    &nbsp;&nbsp; @string.Join(", ", log)
+    @string.Join(", ", log)
 </p>
 
 <p>
@@ -22,12 +21,12 @@
             <option value="ice-invis">Icelandic Invisible</option>
         </select>
     </div>
-    &nbsp;&nbsp;
+
     You chose: <strong>@kittenBreed</strong>
 </p>
 
 <p>
-    <MdcTextField Label="Name of kitten" bind-Text=@kittenName />
+    <MdcTextField Label="Name of kitten" bind-Value=@kittenName />
 </p>
 
 <p>

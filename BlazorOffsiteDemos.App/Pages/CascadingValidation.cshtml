@@ -6,7 +6,7 @@
     <p>
         <div class="mdc-form-field">
             <ValidationGroup>
-                <MdcTextField Label="Kitten name" bind-Text=@kittenName />
+                <MdcTextField Label="Kitten name" bind-Value=@kittenName />
                 <RequiredValidator
                     Value=@(() => kittenName)
                     Message="What is the kitten called?" />

@@ -2,20 +2,26 @@
 
 <h1 class="mdc-typography--headline3">Templated components</h1>
 
-<SuperDialog ref=myDialog Title="Directory info" Context="prod" Thing=fakeProduct>
-    <BodyContent>
-        Item @prod.DisplayName is in stock: @prod.IsInStock
-    </BodyContent>
-    <ButtonsContent>
-        <button class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">Cancel</button>
-        <button class="mdc-button mdc-dialog__button mdc-button--raised" data-mdc-dialog-action="ok">Aww gee, thanks!</button>
-    </ButtonsContent>
-</SuperDialog>
+<MdcDialog ref=myDialog Title="Directory info">
+    <Body>
+        Item @fakeProduct.DisplayName is in stock: @fakeProduct.IsInStock
+    </Body>
+    <Buttons>
+        <MdcButton ButtonStyle="@MdcButton.None" DialogAction="cancel">Cancel</MdcButton>
+        <MdcButton DialogAction="ok">OK</MdcButton>
+    </Buttons>
+</MdcDialog>
 
 <MdcButton onclick=@ShowDialog>Show dialog</MdcButton>
 
+@if (dialogResult != null)
+{
+    <p>Result: <strong>@dialogResult</strong></p>
+}
+
 @functions {
-    SuperDialog<Product> myDialog;
+    MdcDialog myDialog;
+    string dialogResult;
 
     static Product fakeProduct = new Product
     {
@@ -25,8 +31,8 @@
         IsInStock = true
     };
 
-    void ShowDialog()
+    async Task ShowDialog()
     {
-        myDialog.Show();
+        dialogResult = await myDialog.ShowAsync();
     }
 }

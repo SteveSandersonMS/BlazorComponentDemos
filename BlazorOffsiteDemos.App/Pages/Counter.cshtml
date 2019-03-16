@@ -20,17 +20,15 @@
         currentCount++;
     }
     
-    /*
     IDisposable timer;
 
     protected override void OnInit()
     {
-        timer = new Timer(_ => StateHasChanged(), null, 0, 1000);
+        timer = new Timer(_ => Invoke(StateHasChanged), null, 0, 1000);
     }
-    */
 
     public void Dispose()
     {
-        //timer.Dispose();
+        timer.Dispose();
     }
 }

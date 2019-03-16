@@ -1,4 +1,4 @@
-﻿@using Microsoft.JSInterop
+﻿@inherits MdcComponentBase
 @inject IJSRuntime jsRuntime
 
 <header ref="headerElem" class="mdc-top-app-bar app-bar" id="app-bar">
@@ -16,19 +16,12 @@
 @functions {
     [Parameter] string Title { get; set; }
     [Parameter] RenderFragment ChildContent { get; set; }
-    [Parameter] Action OnNavClicked { get; set; }
+    [Parameter] EventCallback OnNavClicked { get; set; }
     [Parameter] string ScrollTarget { get; set; }
 
     ElementRef headerElem;
-    bool isFirstRender = true;
 
-    protected override async Task OnAfterRenderAsync()
-    {
-        if (isFirstRender)
-        {
-            isFirstRender = false;
-            await jsRuntime.InvokeAsync<object>(
+    protected override Task OnAfterFirstRenderAsync()
+        => jsRuntime.InvokeAsync<object>(
                 "BlazorMaterial.topAppBar.init", headerElem, ScrollTarget);
-        }
-    }
 }
